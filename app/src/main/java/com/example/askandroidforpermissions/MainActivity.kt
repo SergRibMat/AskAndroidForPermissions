@@ -15,15 +15,31 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        findViewById<TextView>(R.id.permission_tv).text = permissionText()
         withDexter()
+    }
+
+    private fun permissionText(): String{
+        var permissionNumber: Int = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if(permissionNumber == 0){
+            return "Granted"
+        }else{
+            return "Not Granted"
+        }
     }
 
     private fun showToast(text: String) {
         Toast.makeText(this, text, Toast.LENGTH_LONG).show()
+    }
+
+    override fun checkSelfPermission(permission: String): Int {
+        return super.checkSelfPermission(permission)
     }
 
     fun withDexter(){
@@ -37,7 +53,6 @@ class MainActivity : AppCompatActivity() {
 
                         override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
                             showToast("Permission denied")
-
                         }
 
                         override fun onPermissionRationaleShouldBeShown(p0: PermissionRequest?, token: PermissionToken?) {
@@ -66,7 +81,4 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun pureAndroidPermitions(){
-
-    }
 }
